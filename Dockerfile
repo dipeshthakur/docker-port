@@ -1,47 +1,25 @@
-############################################################
-# Dockerfile to build Nginx Installed Containers
-# Based on Ubuntu
-############################################################
+FROM nginx:1.10.1-alpine
+Add index.html /usr/share/nginx/html/index.html
+COPY start.sh /start.sh
+#COPY runner.sh /runner.sh
+RUN chmod +x /start.sh
+#RUN chmod +x /runner.sh
+#ENTRYPOINT ["/runner.sh"]
+ENTRYPOINT ["/start.sh"]
 
 
-# Set the base image to Ubuntu
-FROM ubuntu
-
-# File Author / Maintainer
-MAINTAINER Dipesh Thakur
-
-# Update the repository
-RUN apt-get update
-RUN apt-get install iputils-ping -y
-
-# Install necessary tools
-RUN apt-get install -y vim wget dialog net-tools
-
-RUN apt install -y nginx
-
-# Remove the default Nginx configuration file
-RUN rm -v /etc/nginx/nginx.conf
-
-# Copy a configuration file from the current directory
-ADD nginx.conf /etc/nginx/
-
-RUN mkdir /etc/nginx/logs
-
-# Add a sample index file
-ADD index.html /www/data/
-
-# Append "daemon off;" to the beginning of the configuration
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-
-# Create a runner script for the entrypoint
-COPY runner.sh /runner.sh
-RUN chmod +x /runner.sh
-
-# Expose ports
-EXPOSE 80
-
-ENTRYPOINT ["/runner.sh"]
-
-# Set the default command to execute
-# when creating a new container
-CMD ["nginx",]
+#RUN apt-get update
+#RUN apt-get install iputils-ping -y
+#RUN apt-get install -y vim wget dialog net-tools
+#RUN apt install -y nginx
+#RUN rm -v /etc/nginx/nginx.conf
+#ADD nginx.conf /etc/nginx/
+#RUN mkdir /etc/nginx/logs
+#RUN mkdir -p /www/data/
+#ADD index.html /www/data/
+#RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+#ADD runner.sh /start.sh
+#RUN chmod +x /start.sh
+#EXPOSE 80
+#ENTRYPOINT ["/start.sh"]
+#CMD ["nginx",]
